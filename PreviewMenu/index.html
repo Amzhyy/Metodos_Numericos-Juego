@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room Numérico - Menú Principal</title>
+    <!-- Google Fonts: Cinzel y Cinzel Decorative para estilo medieval / místico -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@500;700;800&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Cinzel', serif;
+            background-color: #05070c;
+            color: #e0d5b0;
+        }
+
+        /* Contenedor del Menú con el Fondo */
+        .menu-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: url('background.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 20px;
+            z-index: 1;
+        }
+
+        /* Overlay oscuro y místico */
+        .menu-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(13, 21, 48, 0.2) 0%, rgba(5, 7, 12, 0.75) 100%);
+            z-index: -1;
+        }
+
+        /* Fórmulas matemáticas flotando a la izquierda (como el pizarrón) */
+        .math-overlay-left {
+            position: absolute;
+            left: 5%;
+            top: 15%;
+            width: 250px;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            color: rgba(224, 213, 176, 0.25);
+            line-height: 2;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(224, 213, 176, 0.1);
+        }
+
+        /* Fórmulas matemáticas flotando a la derecha (azul brillante como el holograma) */
+        .math-overlay-right {
+            position: absolute;
+            right: 5%;
+            top: 18%;
+            width: 280px;
+            font-family: 'Cinzel', serif;
+            font-size: 15px;
+            color: rgba(0, 191, 255, 0.4);
+            line-height: 2.2;
+            pointer-events: none;
+            text-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+            text-align: right;
+        }
+
+        /* Grupo del Título */
+        .title-group {
+            text-align: center;
+            margin-top: 10px;
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        .title-top {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            color: #d1b877;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(209, 184, 119, 0.3);
+            margin-bottom: 2px;
+        }
+
+        .title-main {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 80px;
+            font-weight: 700;
+            background: linear-gradient(180deg, #ffeaa7 0%, #c8a84b 50%, #8a6f27 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 20px rgba(200, 168, 75, 0.25));
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .title-subtitle {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: #b0c4de;
+            opacity: 0.85;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8), 0 0 8px rgba(176, 196, 222, 0.4);
+        }
+
+        /* Contenedor del Orbe Central (Efecto Giroscopio) */
+        .orb-wrapper {
+            position: absolute;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 260px;
+            height: 260px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(0, 191, 255, 0.8) 0%, rgba(0, 70, 250, 0.3) 50%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(8px);
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        /* Grupo de Botones */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+            width: 100%;
+            max-width: 440px;
+            z-index: 2;
+            margin-bottom: 20px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        /* Botón de Estilo Ornato Gótico Medieval */
+        .menu-btn {
+            position: relative;
+            width: 420px;
+            height: 68px;
+            background: linear-gradient(180deg, #091225 0%, #050b18 100%);
+            border: 2px solid #8e733b;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), inset 0 0 12px rgba(0, 191, 255, 0.1);
+        }
+
+        /* Esquinas de metal dorado ornamental */
+        .menu-btn::before, .menu-btn::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 2px solid #d1b877;
+            pointer-events: none;
+        }
+
+        .menu-btn::before {
+            top: -2px;
+            left: -2px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .menu-btn::after {
+            bottom: -2px;
+            right: -2px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Luces/Gemas Azules en los lados */
+        .btn-gem-left, .btn-gem-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background-color: #00bfff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00bfff, 0 0 20px #00bfff;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gem-left { left: -14px; }
+        .btn-gem-right { right: -14px; }
+
+        /* Soportes metálicos de las luces laterales */
+        .btn-gem-holder-left, .btn-gem-holder-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 4px;
+            background: linear-gradient(90deg, #d1b877, #8e733b);
+            pointer-events: none;
+        }
+
+        .btn-gem-holder-left { left: -12px; }
+        .btn-gem-holder-right { right: -12px; }
+
+        /* Texto del Botón */
+        .btn-text {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #d1b877;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        /* Efectos Hover */
+        .menu-btn:hover {
+            transform: scale(1.03);
+            border-color: #ffeaa7;
+            background: linear-gradient(180deg, #0e1d3c 0%, #081126 100%);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9), 
+                        0 0 15px rgba(0, 191, 255, 0.3),
+                        inset 0 0 20px rgba(0, 191, 255, 0.2);
+        }
+
+        .menu-btn:hover .btn-text {
+            color: #ffeaa7;
+            text-shadow: 0 0 12px rgba(255, 234, 167, 0.6), 0 2px 4px rgba(0, 0, 0, 0.9);
+        }
+
+        .menu-btn:hover .btn-gem-left, .menu-btn:hover .btn-gem-right {
+            background-color: #00ffff;
+            box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+            transform: translateY(-50%) scale(1.3);
+        }
+
+        /* Efecto Click */
+        .menu-btn:active {
+            transform: scale(0.97);
+            background: linear-gradient(180deg, #040812 0%, #020409 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Notificación interactiva al presionar botones */
+        .action-log {
+            position: absolute;
+            bottom: 20px;
+            color: #00bfff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            background: rgba(5, 7, 12, 0.85);
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .action-log.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animaciones */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 0.95;
+                filter: blur(12px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-container">
+        
+        <!-- Pizarrón izquierdo con fórmulas de métodos numéricos -->
+        <div class="math-overlay-left">
+            ∑ x_i y_i - n x̄ ȳ<br>
+            -----------------<br>
+            ∑ x_i² - n x̄²<br><br>
+            f(x) = a₀ + a₁x + a₂x²<br><br>
+            x_{i+1} = x_i - f(x_i)/f'(x_i)
+        </div>
+
+        <!-- Fórmulas derechas brillantes -->
+        <div class="math-overlay-right">
+            f(x) = lim_{h→0} [f(x+h) - f(x)] / h<br><br>
+            [ a₁₁ a₁₂ ... a₁n ]<br>
+            [ a₂₁ a₂₂ ... a₂n ]<br>
+            [ a_{n1} ... a_{nn} ]<br><br>
+            x_{n+1} = x_n - f(x_n)/f'(x_n)
+        </div>
+
+        <!-- Grupo de Título Principal -->
+        <div class="title-group">
+            <div class="title-top">ESCAPE ROOM</div>
+            <div class="title-main">NUMÉRICO</div>
+            <div class="title-subtitle">RESTALECE LA LÍNEA TEMPORAL</div>
+        </div>
+
+        <!-- Orbe / Giroscopio brillante central de fondo -->
+        <div class="orb-wrapper">
+            <div class="orb-glow"></div>
+        </div>
+
+        <!-- Grupo de Botones del Menú Principal -->
+        <div class="button-group">
+            <!-- Botón INICIAR -->
+            <div class="menu-btn" id="btn-iniciar" onclick="handleBtnClick('INICIAR')">
+                <div class="btn-gem-holder-left"></div>
+                <div class="btn-gem-left"></div>
+                
+                <div class="btn-text">INICIAR</div>
+                
+                <div class="btn-gem-holder-right"></div>
+                <div class="btn-gem-right"></div>
+            </div>
+
+            <!-- Botón SALIR -->
+            <div class="menu-btn" id="btn-salir" onclick="handleBtnClick('SALIR')">
+                <div class="btn-gem-holder-left"></div>
+                <div class="btn-gem-left"></div>
+                
+                <div class="btn-text">SALIR</div>
+                
+                <div class="btn-gem-holder-right"></div>
+                <div class="btn-gem-right"></div>
+            </div>
+        </div>
+
+        <!-- Log para mostrar interactividad real -->
+        <div class="action-log" id="action-log">Acción ejecutada</div>
+
+    </div>
+
+    <script>
+        const logEl = document.getElementById('action-log');
+        let logTimeout;
+
+        function handleBtnClick(action) {
+            // Animación y mensaje interactivo de prueba
+            logEl.textContent = `[MainMenuManager.cs] Evento ejecutado: On${action === 'INICIAR' ? 'Iniciar' : 'Salir'}Pressed()`;
+            logEl.classList.add('show');
+
+            clearTimeout(logTimeout);
+            logTimeout = setTimeout(() => {
+                logEl.classList.remove('show');
+            }, 3500);
+
+            // Simulación de transición para el juego
+            if (action === 'INICIAR') {
+                document.body.style.transition = 'all 1s ease';
+                document.body.style.filter = 'brightness(0) blur(10px)';
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                    alert('🎮 Cargando escena principal del juego: "Scene_MN"... (C# LoadScene executado)');
+                }, 1000);
+            } else if (action === 'SALIR') {
+                setTimeout(() => {
+                    alert('🚪 Aplicación cerrada con éxito. (C# Application.Quit ejecutado)');
+                }, 200);
+            }
+        }
+    </script>
+</body>
+</html>
